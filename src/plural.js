@@ -1,8 +1,11 @@
 /*
+ * Copyright 2018, Pavel Lang <langpavel@phpskelet.org>
  * Copyright 2015, Yahoo Inc.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
+
+/* eslint-disable no-underscore-dangle */
 
 // This is a "hack" until a proper `intl-pluralformat` package is created.
 
@@ -20,8 +23,8 @@ function findPluralFunction(locale) {
 
 export default class IntlPluralFormat {
   constructor(locales, options = {}) {
-    let useOrdinal = options.style === 'ordinal';
-    let pluralFn = findPluralFunction(resolveLocale(locales));
+    const useOrdinal = options.style === 'ordinal';
+    const pluralFn = findPluralFunction(resolveLocale(locales));
 
     this.format = value => pluralFn(value, useOrdinal);
   }

@@ -1,47 +1,34 @@
-/*
- * Copyright 2015, Yahoo Inc.
- * Copyrights licensed under the New BSD License.
- * See the accompanying LICENSE file for terms.
- */
-
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import withIntlContext from './withIntlContext';
-import {intlShape, dateTimeFormatPropTypes} from '../types';
-import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
-
-class FormattedDate extends Component {
-  static displayName = 'FormattedDate';
-
-  static propTypes = {
-    ...dateTimeFormatPropTypes,
-    intl: intlShape,
-    value: PropTypes.any.isRequired,
-    format: PropTypes.string,
-    children: PropTypes.func,
-  };
-
-  constructor(props) {
-    super(props);
-    invariantIntlContext(props);
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return shouldIntlComponentUpdate(this, nextProps, nextState);
-  }
-
-  render() {
-    const {formatDate, textComponent: Text} = this.props.intl;
-    const {value, children} = this.props;
-
-    let formattedDate = formatDate(value, this.props);
-
-    if (typeof children === 'function') {
-      return children(formattedDate);
-    }
-
-    return <Text>{formattedDate}</Text>;
-  }
-}
-
-export default withIntlContext(FormattedDate)
+// // @flow
+// /*
+//  * Copyright 2018, Pavel Lang <langpavel@phpskelet.org>
+//  * Copyright 2015, Yahoo Inc.
+//  * Copyrights licensed under the New BSD License.
+//  * See the accompanying LICENSE file for terms.
+//  */
+//
+// import * as React from 'react';
+// import { IntlConsumer } from './context';
+// import type { DateTimeFormatPropTypes } from '../types';
+//
+// export default class FormattedDate extends React.Component<
+//   DateTimeFormatPropTypes,
+// > {
+//   render() {
+//     const { value, children } = this.props;
+//     return (
+//       <IntlConsumer>
+//         {intl => {
+//           const { formatDate, textComponent: Text } = intl;
+//
+//           const formattedDate = formatDate(value, this.props);
+//
+//           if (typeof children === 'function') {
+//             return children(formattedDate);
+//           }
+//
+//           return <Text>{formattedDate}</Text>;
+//         }}
+//       </IntlConsumer>
+//     );
+//   }
+// }
