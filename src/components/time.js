@@ -1,47 +1,31 @@
-/*
- * Copyright 2015, Yahoo Inc.
- * Copyrights licensed under the New BSD License.
- * See the accompanying LICENSE file for terms.
- */
-
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {intlShape, dateTimeFormatPropTypes} from '../types';
-import {invariantIntlContext, shouldIntlComponentUpdate} from '../utils';
-
-export default class FormattedTime extends Component {
-  static displayName = 'FormattedTime';
-
-  static contextTypes = {
-    intl: intlShape,
-  };
-
-  static propTypes = {
-    ...dateTimeFormatPropTypes,
-    value: PropTypes.any.isRequired,
-    format: PropTypes.string,
-    children: PropTypes.func,
-  };
-
-  constructor(props, context) {
-    super(props, context);
-    invariantIntlContext(context);
-  }
-
-  shouldComponentUpdate(...next) {
-    return shouldIntlComponentUpdate(this, ...next);
-  }
-
-  render() {
-    const {formatTime, textComponent: Text} = this.context.intl;
-    const {value, children} = this.props;
-
-    let formattedTime = formatTime(value, this.props);
-
-    if (typeof children === 'function') {
-      return children(formattedTime);
-    }
-
-    return <Text>{formattedTime}</Text>;
-  }
-}
+// // @flow
+// /*
+//  * Copyright 2018, Pavel Lang <langpavel@phpskelet.org>
+//  * Copyright 2015, Yahoo Inc.
+//  * Copyrights licensed under the New BSD License.
+//  * See the accompanying LICENSE file for terms.
+//  */
+// 
+// import * as React from 'react';
+// import type { DateTimeFormatPropTypes } from '../types';
+// 
+// type FormattedTimeProps = DateTimeFormatPropTypes & {
+//   value: mixed,
+//   format: string,
+//   children: Function,
+// };
+// 
+// export default class FormattedTime extends React.Component<FormattedTimeProps> {
+//   render() {
+//     const { formatTime, textComponent: Text } = this.context.intl;
+//     const { value, children } = this.props;
+// 
+//     const formattedTime = formatTime(value, this.props);
+// 
+//     if (typeof children === 'function') {
+//       return children(formattedTime);
+//     }
+// 
+//     return <Text>{formattedTime}</Text>;
+//   }
+// }

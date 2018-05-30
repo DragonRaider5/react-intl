@@ -1,85 +1,65 @@
+// @flow
 /*
+ * Copyright 2018, Pavel Lang <langpavel@phpskelet.org>
  * Copyright 2015, Yahoo Inc.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
 
-import PropTypes from 'prop-types';
+import * as React from 'react';
 
-const {
-  bool,
-  number,
-  string,
-  func,
-  object,
-  oneOf,
-  shape,
-  any,
-  oneOfType,
-} = PropTypes;
-const localeMatcher = oneOf(['best fit', 'lookup']);
-const narrowShortLong = oneOf(['narrow', 'short', 'long']);
-const numeric2digit = oneOf(['numeric', '2-digit']);
-const funcReq = func.isRequired;
+export type MessageDescription =
+  | string
+  | {
+      [name: string]: string,
+    };
 
-export const intlConfigPropTypes = {
-  locale: string,
-  formats: object,
-  messages: object,
-  textComponent: any,
-
-  defaultLocale: string,
-  defaultFormats: object,
+export type MessageDescriptor = {
+  id: string,
+  description?: MessageDescription,
+  cs?: string,
+  en?: string,
+  sk?: string,
+  default?: string,
+  // [lang: string]: string,
 };
 
-export const intlFormatPropTypes = {
-  formatDate: funcReq,
-  formatTime: funcReq,
-  formatRelative: funcReq,
-  formatNumber: funcReq,
-  formatPlural: funcReq,
-  formatMessage: funcReq,
-  formatHTMLMessage: funcReq,
-};
+export type MessageDescriptorMap = { [key: string]: MessageDescriptor };
 
-export const intlShape = shape({
-  ...intlConfigPropTypes,
-  ...intlFormatPropTypes,
-  formatters: object,
-  now: funcReq,
-});
+export type MessageDictionary = { [key: string]: string };
 
-export const messageDescriptorPropTypes = {
-  id: string.isRequired,
-  description: oneOfType([string, object]),
-  defaultMessage: string,
-};
-
-export const dateTimeFormatPropTypes = {
-  localeMatcher,
-  formatMatcher: oneOf(['basic', 'best fit']),
+export type DateTimeFormatSettings = {
+  localeMatcher: 'best fit' | 'lookup',
+  formatMatcher: 'basic' | 'best fit',
 
   timeZone: string,
-  hour12: bool,
+  hour12: boolean,
 
-  weekday: narrowShortLong,
-  era: narrowShortLong,
-  year: numeric2digit,
-  month: oneOf(['numeric', '2-digit', 'narrow', 'short', 'long']),
-  day: numeric2digit,
-  hour: numeric2digit,
-  minute: numeric2digit,
-  second: numeric2digit,
-  timeZoneName: oneOf(['short', 'long']),
+  weekday: 'narrow' | 'short' | 'long',
+  era: 'narrow' | 'short' | 'long',
+  year: 'numeric' | '2-digit',
+  month: 'numeric' | '2-digit' | 'narrow' | 'short' | 'long',
+  day: 'numeric' | '2-digit',
+  hour: 'numeric' | '2-digit',
+  minute: 'numeric' | '2-digit',
+  second: 'numeric' | '2-digit',
+  timeZoneName: 'short' | 'long',
 };
 
-export const numberFormatPropTypes = {
-  localeMatcher,
+export type DateTimeFormatProps = {
+  ...DateTimeFormatSettings,
+  value: any,
+  format: string,
+  children: React.Node,
+};
 
-  style: oneOf(['decimal', 'currency', 'percent']),
+export type NumberFormatSettings = {
+  localeMatcher: 'best fit' | 'lookup',
+
+  style: 'decimal' | 'currency' | 'percent',
   currency: string,
-  currencyDisplay: oneOf(['symbol', 'code', 'name']),
-  useGrouping: bool,
+  currencyDisplay: 'symbol' | 'code' | 'name',
+  useGrouping: boolean,
 
   minimumIntegerDigits: number,
   minimumFractionDigits: number,
@@ -88,11 +68,18 @@ export const numberFormatPropTypes = {
   maximumSignificantDigits: number,
 };
 
-export const relativeFormatPropTypes = {
-  style: oneOf(['best fit', 'numeric']),
-  units: oneOf(['second', 'minute', 'hour', 'day', 'month', 'year']),
+export type NumberFormatProps = {
+  ...NumberFormatSettings,
+  value: any,
+  format: string,
+  children: React.Node,
 };
 
-export const pluralFormatPropTypes = {
-  style: oneOf(['cardinal', 'ordinal']),
+export type RelativeFormatProps = {
+  style: 'best fit' | 'numeric',
+  units: 'second' | 'minute' | 'hour' | 'day' | 'month' | 'year',
+};
+
+export type PluralFormatProps = {
+  style: 'cardinal' | 'ordinal',
 };

@@ -1,11 +1,16 @@
+// @flow
 /*
+ * Copyright 2018, Pavel Lang <langpavel@phpskelet.org>
  * Copyright 2015, Yahoo Inc.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
 
-export default function defineMessages(messageDescriptors) {
-  // This simply returns what's passed-in because it's meant to be a hook for
-  // babel-plugin-react-intl.
+import type { MessageDescriptorMap } from './types';
+
+// transparent proxy for @langpavel/babel-plugin-react-intl
+export default function defineMessages(
+  messageDescriptors: MessageDescriptorMap,
+): MessageDescriptorMap {
   return messageDescriptors;
 }
