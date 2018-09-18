@@ -29,10 +29,18 @@ describe('<FormattedMessage>', () => {
         expect(FormattedMessage.displayName).toBeA('string');
     });
 
-    it('throws when <IntlProvider> is missing from ancestry', () => {
+    it('throws when <IntlProvider> is missing from ancestry and there is no defaultMessage', () => {
         expect(() => renderer.render(<FormattedMessage />)).toThrow(
             '[React Intl] Could not find required `intl` object. <IntlProvider> needs to exist in the component ancestry.'
         );
+    });
+
+    it('should work if <IntlProvider> is missing from ancestry but there is defaultMessage', () => {
+        renderer.render(<FormattedMessage id="hello" defaultMessage="Hello" />);
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <span>Hello</span>
+        );
+        expect(consoleError.calls.length).toBe(1);
     });
 
     it('renders a formatted message in a <span>', () => {
@@ -182,7 +190,7 @@ describe('<FormattedMessage>', () => {
         expect(renderedThree).toNotBe(renderedOne);
     });
 
-    it('accepts `tagName` prop', () => {
+    it('accepts string as `tagName` prop', () => {
         const {intl} = intlProvider.getChildContext();
         const descriptor = {
             id: 'hello',
@@ -194,6 +202,22 @@ describe('<FormattedMessage>', () => {
         renderer.render(el, {intl});
         expect(renderer.getRenderOutput()).toEqualJSX(
             <p>{intl.formatMessage(descriptor)}</p>
+        );
+    });
+
+    it('accepts an react element as `tagName` prop', () => {
+        const {intl} = intlProvider.getChildContext();
+        const descriptor = {
+            id: 'hello',
+            defaultMessage: 'Hello, World!',
+        };
+
+        const H1 = (children) => <h1>{children}</h1>
+        const el = <FormattedMessage {...descriptor} tagName={H1} />;
+
+        renderer.render(el, {intl});
+        expect(renderer.getRenderOutput()).toEqualJSX(
+            <H1>{intl.formatMessage(descriptor)}</H1>
         );
     });
 

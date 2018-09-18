@@ -37,6 +37,11 @@ function updateRelativeFormatThresholds(newThresholds) {
     hour: thresholds.hour,
     day: thresholds.day,
     month: thresholds.month,
+    'second-short': thresholds['second-short'],
+    'minute-short': thresholds['minute-short'],
+    'hour-short': thresholds['hour-short'],
+    'day-short': thresholds['day-short'],
+    'month-short': thresholds['month-short'],
   } = newThresholds);
 }
 
@@ -52,11 +57,14 @@ function getNamedFormat(formats, type, name) {
 }
 
 export function formatDate(config, state, value, options = {}) {
-  const {locale, formats} = config;
+  const {locale, formats, timeZone} = config;
   const {format} = options;
 
   let date = new Date(value);
-  let defaults = format && getNamedFormat(formats, 'date', format);
+  let defaults = {
+    ...(timeZone && {timeZone}),
+    ...(format && getNamedFormat(formats, 'date', format)),
+  };
   let filteredOptions = filterProps(
     options,
     DATE_TIME_FORMAT_OPTIONS,
@@ -75,11 +83,14 @@ export function formatDate(config, state, value, options = {}) {
 }
 
 export function formatTime(config, state, value, options = {}) {
-  const {locale, formats} = config;
+  const {locale, formats, timeZone} = config;
   const {format} = options;
 
   let date = new Date(value);
-  let defaults = format && getNamedFormat(formats, 'time', format);
+  let defaults = {
+    ...(timeZone && {timeZone}),
+    ...(format && getNamedFormat(formats, 'time', format)),
+  };
   let filteredOptions = filterProps(
     options,
     DATE_TIME_FORMAT_OPTIONS,
@@ -247,9 +258,9 @@ export function formatMessage(
     if (process.env.NODE_ENV !== 'production') {
       console.error(
         `[React Intl] Cannot format message: "${id}", ` +
-          `using message ${message || defaultMessage
-            ? 'source'
-            : 'id'} as fallback.`
+          `using message ${
+            message || defaultMessage ? 'source' : 'id'
+          } as fallback.`
       );
     }
   }
